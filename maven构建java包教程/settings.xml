@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <localRepository>C:\Users\123\Desktop\mvnstore\repository</localRepository>
+    <!-- 配置华为云镜像源 -->
+    <mirrors>
+        <mirror>
+            <id>huaweicloud</id>
+            <mirrorOf>*</mirrorOf>
+            <name>HuaweiCloud Maven</name>
+            <url>https://repo.huaweicloud.com/repository/maven/</url>
+        </mirror>
+    </mirrors>
+
+    <!-- 配置代理服务器（如果需要） -->
+    <proxies>
+        <!--
+        <proxy>
+            <id>example-proxy</id>
+            <active>true</active>
+            <protocol>http</protocol>
+            <host>proxy.example.com</host>
+            <port>8080</port>
+            <nonProxyHosts>localhost|127.0.0.1</nonProxyHosts>
+        </proxy>
+        -->
+    </proxies>
+
+    <!-- 配置私有仓库（如果需要） -->
+    <servers>
+        <!--
+        <server>
+            <id>my-private-repo</id>
+            <username>your-username</username>
+            <password>your-password</password>
+        </server>
+        -->
+    </servers>
+
+    <!-- 配置其他设置（如果需要） -->
+    <profiles>
+        <!--
+        <profile>
+            <id>my-profile</id>
+            <repositories>
+                <repository>
+                    <id>my-repo</id>
+                    <url>https://my-repo.example.com/maven2</url>
+                </repository>
+            </repositories>
+        </profile>
+        -->
+    </profiles>
+
+    <!-- 激活特定的profile（如果需要） -->
+    <activeProfiles>
+        <!--
+        <activeProfile>my-profile</activeProfile>
+        -->
+    </activeProfiles>
+
+</settings>

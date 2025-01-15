@@ -1,0 +1,6 @@
+1，namenode安全模式问题：出现字样：safemode is on
+解决办法（临时）：hdfs dfsadmin -safemode leave  （退出安全模式，但是可能会损坏节点内信息，但是基于这个实验，没用到集群存储信息，只是作为暂存容器，影响不大）
+2. 远程主机强迫断开了一个现有连接：尝试查看报错端口，如果和配置文件端口相同，可以尝试不同端口，也可以通过cmd查看端口占用情况
+3. no such file or dictionary：检查自己的路径信息，是否为：file:///开头，意思是本地路径，如出现前缀为：hdfs：localhost：9000:等，说明路径设置错误
+4. no model---：这类字样通常来自于python文件的引用库未下载，或者该环境无这个库
+6. 若出现 failed delete C:/User/*****/AppData/temp：权限没给够，通过以管理员身份重启hadoop集群解决
