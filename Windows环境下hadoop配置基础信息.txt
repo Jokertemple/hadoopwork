@@ -1,0 +1,29 @@
+Windows环境对于hadoop项目在VScode上的集成开发的项目
+
+基于windows平台的hadoop项目开发：
+
+Windows环境对于hadoop项目开发的项目
+前置包:  Hadoop-3.3.6
+         winutils-master.zip
+         Visual Studio Code
+         java-1.8及以上
+Hadoop在Windows环境下的配置流程：
+         先下载解压Hadoop-3.3.6,并且添加环境变量到Windows系统变量中（鉴于容易出现变量不存在，可以系统变量用户变量都配置一此）
+         解压winutils-master.zip,并找到对应hadoop版本winutils，因为我的是3.3.6，所以使用3.3.6，解压以后，将bin目录中的所有文件替换至Hadoop-3.3.6/bin目录下
+         完成这个过程以后，进行Hadoop环境变量测试命令行输入：Hadoop version
+         出现对应hadoop版本信息即为初步配置成功
+         之后对hadoop配置xml文件进行配置：
+                  core-site.xml
+                  hdfs-site.xml
+                  mapred-site.xml
+                  yarn-site.xml
+         配置案例在内部ReadMe文件中
+配置完成后，在VScode中进行集成配置，
+         在VScode中进入扩展页面，搜索java，下载：
+         Language Support for Java（TM）by Red Hat
+         Gradle for Java
+         Debugger for Java
+         Project Manager for Java
+         Extension Pack for Java
+         Test Runner for Java
+         Maven for Java
