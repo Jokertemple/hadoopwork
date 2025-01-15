@@ -1,0 +1,97 @@
+core-site.xml:
+	fs.defaultFS  
+		含义：指定 Hadoop 默认使用的文件系统 URI。
+		示例：  hdfs://localhost:9000   表示默认使用本地主机上的 HDFS，端口为 9000。  	dfs.client.socket-timeout 
+		含义：设置 HDFS 客户端与服务器通信时的套接字超时时间（毫秒）。
+		示例：  120000   表示超时时间为 120 秒。  
+	ipc.client.ping  
+		含义：是否启用客户端与服务器之间的定期心跳检测。
+		示例：  false   表示禁用心跳检测，  true   表示启用。  
+	ipc.ping.interval  
+		含义：心跳检测的间隔时间（毫秒）。
+		示例：  120000   表示心跳检测间隔为 120 秒。
+hdfs-site.xml:
+	dfs.replication  
+		含义：设置 HDFS 中文件的默认副本数量。
+		示例：  3   表示每个文件默认有 3 个副本。  
+	dfs.datanode.address  
+		含义：数据节点（DataNode）的监听地址和端口。
+		示例：  0.0.0.0:9869   表示数据节点监听所有网络接口的 9869 端口。  
+	dfs.namenode.address  
+		含义：名称节点（NameNode）的监听地址和端口。
+		示例：  0.0.0.0:9868   表示名称节点监听所有网络接口的 9868 端口。  
+	dfs.namenode.name.dir  
+		含义：名称节点存储元数据的目录。
+		示例：  file:///C:/hadoop/data/namenode   表示元数据存储在   C:/hadoop/data/namenode   目录。  	dfs.datanode.data.dir  
+		含义：数据节点存储数据块的目录。
+		示例：  file:///C:/hadoop/data/datanode   表示数据块存储在   C:/hadoop/data/datanode   目录。  	dfs.permissions 
+ 		含义：是否启用文件系统权限检查。
+		示例：  true   表示启用权限检查，  false   表示禁用。 
+ 	dfs.namenode.safemode.threshold-pct  
+		含义：安全模式下，必须达到的最小数据块比例才能退出安全模式。
+		示例：  0.95   表示必须有 95% 的数据块可用才能退出安全模式。
+mapred-site.xml：
+	  mapreduce.framework.name  
+		含义：指定 MapReduce 任务运行的框架。
+		示例：  yarn   表示使用 YARN 作为资源管理器，  local   表示在本地运行（单机模式）。  	mapreduce.map.memory.mb  
+		含义：设置 Map 任务的内存分配（以 MB 为单位）。
+		示例：  1024   表示每个 Map 任务分配 1024 MB 内存。  
+	mapreduce.reduce.memory.mb  
+		含义：设置 Reduce 任务的内存分配（以 MB 为单位）。
+		示例：  2048   表示每个 Reduce 任务分配 2048 MB 内存。  
+	mapreduce.map.java.opts  
+		含义：设置 Map 任务的 Java 虚拟机选项。
+		示例：  -Xmx819m   表示 Map 任务的 Java 堆内存最大为 819 MB。  
+	mapreduce.reduce.java.opts  
+		含义：设置 Reduce 任务的 Java 虚拟机选项。
+		示例：  -Xmx1536m   表示 Reduce 任务的 Java 堆内存最大为 1536 MB。  
+	mapreduce.job.reduces  
+		含义：设置 Reduce 任务的数量。
+		示例：  1   表示设置 1 个 Reduce 任务。  
+	mapreduce.fileoutputcommitter.marksuccessfuljobs  
+		含义：是否在作业成功完成后在输出目录中创建   _SUCCESS   文件。
+		示例：  false   表示不创建   _SUCCESS   文件。  
+	mapreduce.fileoutputcommitter.cleanup-failures.ignored  
+		含义：是否忽略作业失败时的清理操作。
+		示例：  true   表示忽略清理操作，即使作业失败也不删除输出文件。
+yarn-site.xml：
+YARN 辅助服务
+	yarn.nodemanager.aux-services  
+		含义：指定 NodeManager 提供的辅助服务。
+		示例：  mapreduce_shuffle   表示启用 MapReduce 的 Shuffle 服务。
+	yarn.nodemanager.aux-services.mapreduce.shuffle.class  
+		含义：指定 Shuffle 服务的实现类。
+		示例：  org.apache.hadoop.mapred.ShuffleHandler   表示使用 Hadoop 提供的 ShuffleHandler 类。
+YARN 资源管理器地址  
+	yarn.resourcemanager.address  
+		含义：资源管理器的主地址。
+		示例：  localhost:9899   表示资源管理器监听   localhost   的 9899 端口。
+	yarn.resourcemanager.resource-tracker.address  
+		含义：资源跟踪器的地址。
+		示例：  localhost:8031   表示资源跟踪器监听   localhost   的 8031 端口。   	yarn.resourcemanager.scheduler.address  
+		含义：调度器的地址。
+		示例：  localhost:8030   表示调度器监听   localhost   的 8030 端口。
+	yarn.resourcemanager.admin.address  
+		含义：管理员接口的地址。
+		示例：  localhost:8033   表示管理员接口监听   localhost   的 8033 端口。
+ResourceManager 配置
+	yarn.resourcemanager.hostname  
+		含义：ResourceManager 的主机名。
+		示例：  localhost   表示 ResourceManager 运行在本地主机上。
+	yarn.resourcemanager.webapp.address  
+		含义：ResourceManager Web UI 的地址。
+		示例：  localhost:8088   表示 Web UI 监听   localhost   的 8088 端口。
+NodeManager 资源配置
+	yarn.nodemanager.resource.memory-mb  
+		含义：每个 NodeManager 可用的总内存（以 MB 为单位）。
+		示例：  4096   表示每个 NodeManager 有 4096 MB 内存。
+	yarn.nodemanager.resource.cpu-vcores  
+		含义：每个 NodeManager 可用的虚拟 CPU 核心数。
+		示例：  4   表示每个 NodeManager 有 4 个虚拟 CPU 核心。
+MapReduce 配置
+	yarn.app.mapreduce.am.resource.mb  
+		含义：MapReduce 作业的 ApplicationMaster 分配的内存（以 MB 为单位）。
+		示例：  1024   表示 ApplicationMaster 分配 1024 MB 内存。
+	yarn.app.mapreduce.am.command-opts  
+		含义：MapReduce 作业的 ApplicationMaster 的 Java 虚拟机选项。
+		示例：  -Xmx768m   表示 ApplicationMaster 的 Java 堆内存最大为 768 MB。
