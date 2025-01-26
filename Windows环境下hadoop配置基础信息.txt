@@ -4,12 +4,12 @@ Windows环境对于hadoop项目在VScode上的集成开发的项目
 
 Windows环境对于hadoop项目开发的项目
 前置包:  Hadoop-3.3.6
-         winutils-master.zip
+         winutils.rar
          Visual Studio Code
          java-1.8及以上
 Hadoop在Windows环境下的配置流程：
          先下载解压Hadoop-3.3.6,并且添加环境变量到Windows系统变量中（鉴于容易出现变量不存在，可以系统变量用户变量都配置一此）
-         解压winutils-master.zip,并找到对应hadoop版本winutils，因为我的是3.3.6，所以使用3.3.6，解压以后，将bin目录中的所有文件替换至Hadoop-3.3.6/bin目录下
+         解压winutils.rar,并找到对应hadoop版本winutils，因为我的是3.3.6，所以使用3.3.6，解压以后，将bin目录中的所有文件替换至Hadoop-3.3.6/bin目录下
          完成这个过程以后，进行Hadoop环境变量测试命令行输入：Hadoop version
          出现对应hadoop版本信息即为初步配置成功
          之后对hadoop配置xml文件进行配置：
