@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>抖音热门视频分析系统</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+    .left-panel {
+      width: 25%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .right-panel {
+      width: 75%;
+      padding: 20px;
+      box-sizing: border-box;
+      height: 100vh; /* 确保父容器的高度为视口高度 */
+      margin-left: -40px; /* 向左移动20px，你可以根据实际情况调整这个值 */
+    }
+    .result-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      object-fit: contain;
+    }
+    .loading {
+      display: none;
+      margin-top: 20px;
+    }
+    .alert-message {
+      margin-top: 20px;
+      color: green;
+      font-weight: bold;
+      display: none;
+    }
+    .alert-error {
+      margin-top: 20px;
+      color: red;
+      font-weight: bold;
+      display: none;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left-panel">
+      <h1>输入关键词</h1>
+      <input type="text" id="inputField" placeholder="请输入关键词">
+      <button id="submitButton">提交</button>
+      <div class="loading" id="loadingIndicator">正在处理，请稍候...</div>
+      <div id="successMessage" class="alert-message"></div>
+      <div id="errorMessage" class="alert-error"></div>
+      <select id="resultSelector">
+        <option value="none">请选择结果类型</option>
+        <option value="main">话题标签热度分析</option>
+        <option value="interactions">总互动量分析</option>
+        <option value="scatter">视频时长分析</option>
+      </select>
+    </div>
+    <div class="right-panel">
+      <div id="resultContainer" class="result-container">
+        <!-- 容器用于加载多个HTML可视化 -->
+        <div id="mainResult" class="hidden">
+          <iframe id="mainResultIframe"></iframe>
+        </div>
+        <div id="scatterResult" class="hidden">
+          <iframe id="scatterResultIframe"></iframe>
+        </div>
+        <div id="heatmapResult" class="hidden">
+          <iframe id="heatmapResultIframe"></iframe>
+        </div>
+        <div id="textResult" class="hidden">
+          <pre id="textResultContent"></pre>
+        </div>
+        <div id="interactionsResult" class="hidden">
+          <iframe id="interactionsResultIframe"></iframe>
+        </div>        
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function adjustIframeHeight() {
+      var mainIframe = document.getElementById('mainResultIframe');
+      var scatterIframe = document.getElementById('scatterResultIframe');
+      var heatmapIframe = document.getElementById('heatmapResultIframe');
+      var interactionsIframe = document.getElementById('interactionsResultIframe');
+
+      // 获取浏览器窗口的高度
+      var windowHeight = window.innerHeight;
+
+      // 设置iframe的高度为窗口高度的75%
+      var iframeHeight = windowHeight * 0.75;
+
+      mainIframe.style.height = iframeHeight + 'px';
+      scatterIframe.style.height = iframeHeight + 'px';
+      heatmapIframe.style.height = iframeHeight + 'px';
+      interactionsIframe.style.height = iframeHeight + 'px';
+    }
+
+    window.addEventListener('load', adjustIframeHeight);
+    window.addEventListener('resize', adjustIframeHeight);
+
+    const inputField = document.getElementById('inputField');
+    const submitButton = document.getElementById('submitButton');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const resultContainer = document.getElementById('resultContainer');
+    const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
+    const mainResultIframe = document.getElementById('mainResultIframe');
+    const scatterResultIframe = document.getElementById('scatterResultIframe');
+    const heatmapResultIframe = document.getElementById('heatmapResultIframe');
+    const textResultContent = document.getElementById('textResultContent');
+    const resultSelector = document.getElementById('resultSelector');
+    const interactionsResultIframe = document.getElementById('interactionsResultIframe');
+
+    let isSubmitting = false; // 添加一个标志位来跟踪是否正在提交
+
+    submitButton.addEventListener('click', (event) => {
+      event.preventDefault(); // 阻止默认事件，防止页面刷新
+
+      if (isSubmitting) return; // 如果已经在提交，则直接返回，防止重复提交
+
+      const userInput = inputField.value.trim();
+      if (!userInput) {
+        alert('请输入有效的关键词');
+        return;
+      }
+
+      // 显示加载指示器并隐藏结果容器和消息
+      loadingIndicator.style.display = 'block';
+      resultContainer.style.display = 'none';
+      successMessage.style.display = 'none';
+      errorMessage.style.display = 'none';
+
+      isSubmitting = true;
+
+      fetch('http://localhost:3000/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ keyword: userInput })
+      })
+      .then(response => response.json())
+      .then(data => {
+      console.log('后端处理结果:', data);
+      if (data.htmlUrls) {
+        // 设置各iframe的src属性为对应的HTML文件URL
+        mainResultIframe.src = data.htmlUrls.main || '';
+        scatterResultIframe.src = data.htmlUrls.scatter || '';
+        heatmapResultIframe.src = data.htmlUrls.heatmap || '';
+        interactionsResultIframe.src = data.htmlUrls.interactions || '';
+
+        // 显示结果容器并隐藏加载指示器
+        resultContainer.style.display = 'block';
+        loadingIndicator.style.display = 'none';
+
+        // 显示成功消息
+        successMessage.textContent = '任务已完成，可视化数据如下：';
+        successMessage.style.display = 'block';
+
+        // 根据选择显示相应的结果
+        updateResultDisplay(data); // 确保传递 data 对象
+      } else {
+        // 显示错误消息
+        errorMessage.textContent = 'HTML文件生成失败';
+        errorMessage.style.display = 'block';
+        loadingIndicator.style.display = 'none';
+      }
+    })
+    .catch(error => {
+      console.error('请求失败:', error);
+      // 显示错误消息
+      errorMessage.textContent = '请求失败';
+      errorMessage.style.display = 'block';
+      loadingIndicator.style.display = 'none';
+    })
+    .finally(() => {
+      isSubmitting = false; // 请求完成后重置提交状态
+    });
+  });
+
+  let currentData; // 用于存储当前的数据对象
+
+  resultSelector.addEventListener('change', (event) => {
+    updateResultDisplay(currentData); // 使用当前存储的数据对象
+  });
+
+  function updateResultDisplay(data) {
+    currentData = data; // 更新当前数据对象
+    const selectedValue = resultSelector.value;
+    const mainResult = document.getElementById('mainResult');
+    const scatterResult = document.getElementById('scatterResult');
+    const heatmapResult = document.getElementById('heatmapResult');
+    const textResult = document.getElementById('textResult');
+    const interactionsResult = document.getElementById('interactionsResult');
+
+    mainResult.classList.add('hidden');
+    scatterResult.classList.add('hidden');
+    heatmapResult.classList.add('hidden');
+    textResult.classList.add('hidden');
+    interactionsResult.classList.add('hidden');
+
+      if (selectedValue === 'main') {
+        mainResult.classList.remove('hidden');
+      } else if (selectedValue === 'scatter') {
+        scatterResult.classList.remove('hidden');
+        heatmapResult.classList.remove('hidden');
+        textResult.classList.remove('hidden');
+        textResultContent.textContent = data.textContent || 'No text content available';
+      } else if (selectedValue === 'interactions') {
+        interactionsResult.classList.remove('hidden');
+      }
+    }
+
+  </script>
+</body>
+</html>

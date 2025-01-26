@@ -1,0 +1,4 @@
+jar包在 app.js中进行调用，通过: await execPromise(`Hadoop jar demo.jar com.example.VideoInteractionDriver(jar包里的主类名) inputDir（文件输入路径） outputDir（文件输出路径）`);命令进行调用jar处理数据
+运行成功后，命令行会有INFO：类的信息，并且会显示节点管理状态等信息，以及写入写出数据量等信息，
+
+此外，还有另外一个方法，则是通过python库mrjob进行mapreduce任务，mrjob是一个开源的python框架，封装Hadoop的数据流，并积极开发Yelp的（Yelp的运作完全在亚马逊网络服务）

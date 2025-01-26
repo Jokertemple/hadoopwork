@@ -1,0 +1,13 @@
+通过官网或者镜像源下载apache maven包，这边有一个3.8.8版本的压缩包
+配置maven的配置文件settings.xml(有两个配置文件，默认为安装路径下的/conf/settsing.xml；还有一个则是在C:/Users/****/.m2中，若.m2中没有，则可以手动创建一个settsing.xml），打开VScode设置，搜索：Java.Configuration.Maven:User Settings，设置对应的settings.xml文件位置
+
+在Windows环境变量配置中，正确配置maven变量，配置完成在命令行通过：mvn 查看是否有正确输出，或 mvn -V查看版本信息
+
+之后（ctrl+shift+P）搜索：Maven，找到new project字样，创建Maven项目，可以直接默认版本（1.0），项目名等（demo/com.example）设置，
+之后在生成的项目中打开，在src/main/java/com/example目录下，新建一个目录mapreduce或者直接将java文件放入example目录下,之后配置pom.xml文件，
+
+
+pom.xml文件配置 已有案例在目录/maven构建java包教程/中。
+
+配置完成以后，尝试构建jar包：mvn clean package (之后按照指示确认包信息即可）
+生成成功后，jar包将在/demo/target/目录下
